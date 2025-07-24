@@ -2,9 +2,10 @@ pipeline {
   agent any
 
   environment {
+    // 호스트에 있는 실제 was 디렉터리 경로
+    HOST_WAS_DIR = '/home/ubuntu/siseon/was'
+    // 사용할 Compose 컨테이너 이미지 (v1.29.2)
     COMPOSE_IMAGE = 'docker/compose:1.29.2'
-    // Jenkins가 체크아웃한 워크스페이스(코드 + Compose 파일 포함)
-    WORKSPACE_DIR = "${env.WORKSPACE}"
   }
 
   stages {
@@ -19,12 +20,12 @@ pipeline {
         sh """
           docker run --rm \\
             -v /var/run/docker.sock:/var/run/docker.sock \\
-            -v "${WORKSPACE_DIR}":/app -w /app \\
+            -v "${HOST_WAS_DIR}":/app -w /app \\
             ${COMPOSE_IMAGE} \\
             -f docker-compose.was.yml down && \\
           docker run --rm \\
             -v /var/run/docker.sock:/var/run/docker.sock \\
-            -v "${WORKSPACE_DIR}":/app -w /app \\
+            -v "${HOST_WAS_DIR}":/app -w /app \\
             ${COMPOSE_IMAGE} \\
             -f docker-compose.was.yml up -d --build
         """
