@@ -5,6 +5,11 @@ WORKDIR /home/gradle/project
 # 의존성 캐시
 COPY build.gradle settings.gradle gradlew ./
 COPY gradle gradle
+
+# gradlew 실행 권한 추가
+RUN chmod +x ./gradlew
+
+# 의존성 다운로드 및 빌드 준비
 RUN ./gradlew --no-daemon clean assemble
 
 # 실제 소스 복사 후 JAR 생성
