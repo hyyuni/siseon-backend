@@ -17,13 +17,13 @@ pipeline {
             -v "${WORKSPACE}":/home/ubuntu/siseon/was \
             -w /home/ubuntu/siseon/was \
             docker/compose:1.29.2 \
-            down && \
+            -f docker-compose.was.yml down && \
           docker run --rm \
             -v /var/run/docker.sock:/var/run/docker.sock \
             -v "${WORKSPACE}":/home/ubuntu/siseon/was \
             -w /home/ubuntu/siseon/was \
             docker/compose:1.29.2 \
-            up -d --build
+            -f docker-compose.was.yml up -d --build
         '''
       }
     }
