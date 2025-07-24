@@ -2,35 +2,35 @@ pipeline {
   agent any
 
   stages {
-    stage('Checkout SCM') {
+    stage('Checkout') {
       steps {
+        // GitHub 리포지터리 전체를 $WORKSPACE에 체크아웃
         checkout scm
       }
     }
 
-    stage('Build & Deploy') {
+    stage('Deploy with Compose') {
       steps {
-        // 워크스페이스 전체를 /was로 마운트
         sh '''
           docker run --rm \
             -v /var/run/docker.sock:/var/run/docker.sock \
-            -v "${WORKSPACE}":/was \
-            -w /was \
+            -v "${WORKSPACE}":/home/ubuntu/siseon/was \
+            -w /home/ubuntu/siseon/was \
             docker/compose:1.29.2 \
-            -f docker-compose.was.yml down && \
+            down && \
           docker run --rm \
             -v /var/run/docker.sock:/var/run/docker.sock \
-            -v "${WORKSPACE}":/was \
-            -w /was \
+            -v "${WORKSPACE}":/home/ubuntu/siseon/was \
+            -w /home/ubuntu/siseon/was \
             docker/compose:1.29.2 \
-            -f docker-compose.was.yml up -d --build
+            up -d --build
         '''
       }
     }
   }
 
   post {
-    success { echo '✅ 배포 성공!' }
-    failure { echo '❌ 배포 실패…' }
+    success { echo '✅ 배포 완료!' }
+    failure { echo '❌ 배포 실패...' }
   }
 }
