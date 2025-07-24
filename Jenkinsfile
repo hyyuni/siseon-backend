@@ -1,29 +1,34 @@
 pipeline {
   agent any
 
+  environment {
+    // compose 컨테이너 이미지
+    COMPOSE_IMAGE = 'docker/compose:1.29.2'
+    // GitHub에서 내려받은 리포트리 루트 밑에 실제 서비스 폴더
+    SERVICE_DIR   = "${env.WORKSPACE}/siseon-backend"
+  }
+
   stages {
     stage('Checkout SCM') {
       steps {
-        // GitHub 리포지토리 전체를 $WORKSPACE에 가져옵니다
         checkout scm
       }
     }
 
     stage('Build & Deploy') {
       steps {
-        // workspace 전체를 /was로 마운트하고, /was에서 compose down/up 실행
         sh '''
           docker run --rm \
             -v /var/run/docker.sock:/var/run/docker.sock \
-            -v "${WORKSPACE}":/was \
+            -v "${SERVICE_DIR}":/was \
             -w /was \
-            docker/compose:1.29.2 \
+            ${COMPOSE_IMAGE} \
             -f docker-compose.was.yml down && \
           docker run --rm \
             -v /var/run/docker.sock:/var/run/docker.sock \
-            -v "${WORKSPACE}":/was \
+            -v "${SERVICE_DIR}":/was \
             -w /was \
-            docker/compose:1.29.2 \
+            ${COMPOSE_IMAGE} \
             -f docker-compose.was.yml up -d --build
         '''
       }
@@ -31,11 +36,7 @@ pipeline {
   }
 
   post {
-    success {
-      echo '✅ 배포 성공!'
-    }
-    failure {
-      echo '❌ 배포 실패…'
-    }
+    success { echo '✅ 배포 성공!' }
+    failure { echo '❌ 배포 실패…' }
   }
 }
