@@ -1,33 +1,39 @@
 pipeline {
   agent any
 
+  environment {
+    COMPOSE_IMAGE = 'docker/compose:1.29.2'
+    SERVICE_DIR   = "${WORKSPACE}/siseon-backend"
+  }
+
   stages {
     stage('Checkout') {
-      steps {
-        // GitHub 저장소 전체를 워크스페이스에 내려받습니다
-        checkout scm
-      }
+      steps { checkout scm }
     }
 
-    stage('Deploy') {
+    stage('Build & Deploy') {
       steps {
-        // siseon-backend 폴더로 이동해서 Compose 명령만 실행
-        dir('siseon-backend') {
-          sh '''
-            docker-compose down
-            docker-compose up -d --build
-          '''
-        }
+        sh """
+          # Compose down
+          docker run --rm \\
+            -v /var/run/docker.sock:/var/run/docker.sock \\
+            -v "${SERVICE_DIR}":/app \\
+            -w /app \\
+            ${COMPOSE_IMAGE} down
+
+          # Compose up
+          docker run --rm \\
+            -v /var/run/docker.sock:/var/run/docker.sock \\
+            -v "${SERVICE_DIR}":/app \\
+            -w /app \\
+            ${COMPOSE_IMAGE} up -d --build
+        """
       }
     }
   }
 
   post {
-    success {
-      echo '✅ 배포 완료!'
-    }
-    failure {
-      echo '❌ 배포 실패…'
-    }
+    success { echo '✅ 배포 완료!' }
+    failure { echo '❌ 배포 실패…' }
   }
 }
