@@ -10,17 +10,17 @@ pipeline {
 
     stage('Build & Deploy') {
       steps {
-        // GitHub에서 체크아웃된 siseon-backend 전체를 /was로 마운트
+        // 워크스페이스 전체를 /was로 마운트
         sh '''
           docker run --rm \
             -v /var/run/docker.sock:/var/run/docker.sock \
-            -v "${WORKSPACE}/siseon-backend":/was \
+            -v "${WORKSPACE}":/was \
             -w /was \
             docker/compose:1.29.2 \
             -f docker-compose.was.yml down && \
           docker run --rm \
             -v /var/run/docker.sock:/var/run/docker.sock \
-            -v "${WORKSPACE}/siseon-backend":/was \
+            -v "${WORKSPACE}":/was \
             -w /was \
             docker/compose:1.29.2 \
             -f docker-compose.was.yml up -d --build
@@ -30,11 +30,7 @@ pipeline {
   }
 
   post {
-    success {
-      echo '✅ 배포 성공!'
-    }
-    failure {
-      echo '❌ 배포 실패…'
-    }
+    success { echo '✅ 배포 성공!' }
+    failure { echo '❌ 배포 실패…' }
   }
 }
