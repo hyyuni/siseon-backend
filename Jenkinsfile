@@ -8,16 +8,12 @@ pipeline {
       }
     }
 
-    stage('Build') {
-      steps {
-        sh './gradlew clean bootJar -x test'
-      }
-    }
-
-    stage('Deploy') {
+    stage('Build & Deploy via Docker') {
       steps {
         dir('was') {
+          // 중단된 컨테이너가 있으면 내린 후
           sh 'docker-compose down'
+          // Dockerfile 멀티스테이지 빌드 + 컨테이너 기동
           sh 'docker-compose up -d --build'
         }
       }
