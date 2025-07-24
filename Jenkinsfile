@@ -8,20 +8,23 @@ pipeline {
       }
     }
 
-    stage('Build & Deploy via Docker Compose Container') {
+    stage('Verify Docker') {
       steps {
-        // was 디렉터리로 이동한 뒤, Compose 컨테이너를 띄워 down/up 수행
+        // 에이전트(컨테이너) 안에 docker 바이너리가 살아있는지 확인
+        sh 'docker version'
+      }
+    }
+
+    stage('Build & Deploy via Compose-Container') {
+      steps {
         dir('was') {
-          // 기존 컨테이너 종료
+          // down & up 을 한 번에
           sh '''
             docker run --rm \
               -v /var/run/docker.sock:/var/run/docker.sock \
               -v "$PWD":/app -w /app \
               docker/compose:2.20.2 \
-              -f docker-compose.was.yml down
-          '''
-          // 컨테이너 재빌드 및 재시작
-          sh '''
+              -f docker-compose.was.yml down && \
             docker run --rm \
               -v /var/run/docker.sock:/var/run/docker.sock \
               -v "$PWD":/app -w /app \
