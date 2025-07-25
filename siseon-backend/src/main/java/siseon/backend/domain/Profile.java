@@ -21,7 +21,9 @@ public class Profile {
     private String name;
     private LocalDate birthDate;
     private Float height;
-    private Float vision;
+    private Float leftVision;
+    private Float rightVision;
+    private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

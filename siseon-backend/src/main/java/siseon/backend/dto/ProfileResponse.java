@@ -13,6 +13,8 @@ public class ProfileResponse {
     private String name;
     private LocalDate birthDate;
     private Float height;
-    private Float vision;
+    private Float leftVision;
+    private Float rightVision;
+    private String imageUrl;
     private String settings;
 }

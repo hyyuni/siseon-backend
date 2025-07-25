@@ -24,7 +24,9 @@ public class ProfileService {
                 .name(req.getName())
                 .birthDate(req.getBirthDate())
                 .height(req.getHeight())
-                .vision(req.getVision())
+                .leftVision(req.getLeftVision())
+                .rightVision(req.getRightVision())
+                .imageUrl(req.getImageUrl())
                 .settings(req.getSettings())
                 .user(user)
                 .build();
@@ -50,7 +52,9 @@ public class ProfileService {
         profile.setName(req.getName());
         profile.setBirthDate(req.getBirthDate());
         profile.setHeight(req.getHeight());
-        profile.setVision(req.getVision());
+        profile.setLeftVision(req.getLeftVision());
+        profile.setRightVision(req.getRightVision());
+        profile.setImageUrl(req.getImageUrl());
         profile.setSettings(req.getSettings());
 
         return toDto(profile);
@@ -78,7 +82,9 @@ public class ProfileService {
                 .name(p.getName())
                 .birthDate(p.getBirthDate())
                 .height(p.getHeight())
-                .vision(p.getVision())
+                .leftVision(p.getLeftVision())
+                .rightVision(p.getRightVision())
+                .imageUrl(p.getImageUrl())
                 .settings(p.getSettings())
                 .build();
     }
