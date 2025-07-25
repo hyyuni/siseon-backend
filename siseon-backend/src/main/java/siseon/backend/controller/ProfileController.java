@@ -1,13 +1,9 @@
 package siseon.backend.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import siseon.backend.domain.User;
 import siseon.backend.dto.ProfileCreateRequest;
@@ -17,7 +13,6 @@ import siseon.backend.service.ProfileService;
 
 import java.util.List;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/profile")
 @RequiredArgsConstructor
@@ -46,13 +41,6 @@ public class ProfileController {
             @PathVariable Long id,
             @AuthenticationPrincipal Jwt jwt
     ) {
-        // ─── 디버깅용 ───
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth instanceof JwtAuthenticationToken jwtAuth) {
-            String rawToken = jwtAuth.getToken().getTokenValue();
-            log.debug("Access Token = {}", rawToken);
-        }
-        // ───────────────────────────
         User user = getAuthenticatedUser(jwt);
         return ResponseEntity.ok(profileService.getProfileById(id, user));
     }
