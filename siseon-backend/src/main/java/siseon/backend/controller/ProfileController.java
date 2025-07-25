@@ -22,13 +22,8 @@ public class ProfileController {
     private final UserRepository userRepository;
 
     private User getAuthenticatedUser(Jwt jwt) {
-        // 1) 토큰 클레임 전부 보기
-        jwt.getClaims().forEach((k, v) ->
-                System.out.println("JWT claim: " + k + " = " + v)
-        );
-
-        // 2) DB에 있는 컬럼과 매핑할 키 골라서 조회
-        String email = jwt.getClaimAsString("email"); // 예: "email" 클레임
+        // sub 클레임에 이메일이 들어있으므로, getSubject() 사용
+        String email = jwt.getSubject();
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
