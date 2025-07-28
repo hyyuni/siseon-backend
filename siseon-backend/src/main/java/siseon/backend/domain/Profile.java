@@ -2,6 +2,8 @@ package siseon.backend.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import siseon.backend.config.JsonConverter;
+import java.util.Map;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -30,15 +32,18 @@ public class Profile {
     private User user;
 
     @Lob
+    @Convert(converter = JsonConverter.class)
     @Column(columnDefinition = "TEXT")
-    private String settings;
+    private Map<String, Object> settings;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now();
+        createdAt = now;
+        updatedAt = now;
     }
 
     @PreUpdate

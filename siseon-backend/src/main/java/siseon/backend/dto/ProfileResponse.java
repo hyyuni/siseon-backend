@@ -2,6 +2,7 @@ package siseon.backend.dto;
 
 import lombok.*;
 import java.time.LocalDate;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -16,5 +17,5 @@ public class ProfileResponse {
     private Float leftVision;
     private Float rightVision;
     private String imageUrl;
-    private String settings;
+    private Map<String, Object> settings;
 }
