@@ -23,6 +23,7 @@ public class ProfileService {
 
     /** 프로필 생성 */
     public ProfileResponse createProfile(ProfileCreateRequest req, User user) {
+        // DTO -> Entity 변환 및 단방향 세팅
         Profile profile = Profile.builder()
                 .name(req.getName())
                 .birthDate(req.getBirthDate())
@@ -31,16 +32,27 @@ public class ProfileService {
                 .rightVision(req.getRightVision())
                 .imageUrl(req.getImageUrl())
                 .settings(req.getSettings())
+                .user(user)
                 .build();
 
-        // 편의 메서드로 양방향 연관관계 설정
-        user.addProfile(profile);
-        userRepository.save(user);  // cascade로 profile 저장
+        // profile을 직접 저장하여 정상 INSERT 발생
+        Profile saved = profileRepository.save(profile);
 
-        return toDto(profile);
+        // 저장된 Entity를 DTO로 변환 후 반환
+        return ProfileResponse.builder()
+                .id(saved.getId())
+                .name(saved.getName())
+                .birthDate(saved.getBirthDate())
+                .height(saved.getHeight())
+                .leftVision(saved.getLeftVision())
+                .rightVision(saved.getRightVision())
+                .imageUrl(saved.getImageUrl())
+                .settings(saved.getSettings())
+                .build();
     }
 
     /** 프로필 목록 조회 */
+    @Transactional(readOnly = true)
     public List<ProfileResponse> getProfiles(User user) {
         return profileRepository.findAllByUser(user).stream()
                 .map(this::toDto)
@@ -48,6 +60,7 @@ public class ProfileService {
     }
 
     /** 단일 프로필 조회 */
+    @Transactional(readOnly = true)
     public ProfileResponse getProfileById(Long id, User user) {
         Profile profile = getOwnedProfile(id, user);
         return toDto(profile);
@@ -71,8 +84,7 @@ public class ProfileService {
     /** 프로필 삭제 */
     public void deleteProfile(Long id, User user) {
         Profile profile = getOwnedProfile(id, user);
-        user.removeProfile(profile);
-        userRepository.save(user);  // cascade로 profile 삭제
+        profileRepository.delete(profile);
     }
 
     private Profile getOwnedProfile(Long id, User user) {
