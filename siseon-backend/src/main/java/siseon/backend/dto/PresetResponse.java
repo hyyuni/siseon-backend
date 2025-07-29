@@ -20,7 +20,7 @@ public class PresetResponse {
 
     public static PresetResponse fromEntity(siseon.backend.domain.Preset preset) {
         return PresetResponse.builder()
-                .presetId(preset.getPresetId())
+                .presetId(preset.getId())
                 .deviceId(preset.getDeviceId())
                 .name(preset.getName())
                 .position(preset.getPosition())
