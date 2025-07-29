@@ -86,6 +86,5 @@ public class PresetService {
         return presetRepository.findById(presetId)
                 .map(PresetResponse::fromEntity)
                 .orElseThrow(() -> new IllegalArgumentException("해당 프리셋이 존재하지 않습니다. id=" + presetId));
-        }
     }
 }
