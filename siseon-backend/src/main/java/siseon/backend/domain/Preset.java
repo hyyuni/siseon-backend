@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 @Entity
-@Table(name = "presets")
+@Table(name = "preset")
 @Getter
 @Setter
 @NoArgsConstructor
