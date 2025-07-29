@@ -12,7 +12,7 @@ import java.util.Map;
 @Builder
 public class PresetResponse {
 
-    private Long id;
+    private Long presetId;
     private Long deviceId;
     private String name;
     private Map<String, Object> position;
@@ -20,7 +20,7 @@ public class PresetResponse {
 
     public static PresetResponse fromEntity(siseon.backend.domain.Preset preset) {
         return PresetResponse.builder()
-                .id(preset.getId())
+                .presetId(preset.getPresetId())
                 .deviceId(preset.getDeviceId())
                 .name(preset.getName())
                 .position(preset.getPosition())

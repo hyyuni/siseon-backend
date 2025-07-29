@@ -22,7 +22,7 @@ public class Preset {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "preset_id")
-    private Long id;
+    private Long presetId;
 
     @NotNull
     @Column(name = "device_id", nullable = false)
