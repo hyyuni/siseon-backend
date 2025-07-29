@@ -42,7 +42,7 @@ public class ProfileService {
 
     /** 프로필 목록 조회 */
     public List<ProfileResponse> getProfiles(User user) {
-        return user.getProfiles().stream()
+        return profileRepository.findAllByUser(user).stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());
     }
