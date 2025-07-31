@@ -88,7 +88,7 @@
   - OAuth2 Client + JWT Resource Server 설정  
   - CORS 정책으로 Flutter 도메인 허용  
   - 운영 환경 HTTP→HTTPS 리다이렉트  
-- **JwtTokenProvider** & **JwtAuthenticationFilter** 구현  
+- **JwtTokenProvider** & **JwtAuthenticationFilter** 구현
 
 
 ## 9. HTTP 클라이언트 설정  
