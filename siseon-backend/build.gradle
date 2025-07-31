@@ -26,6 +26,8 @@ repositories {
 dependencies {
     // ▶ Spring Web
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    // ▶ Spring Websocket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
     // ▶ Spring Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
     // ▶ JWT Encoder/Decoder
