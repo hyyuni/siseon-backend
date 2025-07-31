@@ -87,6 +87,12 @@ public class ProfileService {
         profileRepository.delete(profile);
     }
 
+    /** FCM 토큰 업데이트 메서드 */
+    public void updateFcmToken(Long id, String fcmToken, User user) {
+        Profile profile = getOwnedProfile(id, user);
+        profile.setFcmToken(fcmToken);
+    }
+
     private Profile getOwnedProfile(Long id, User user) {
         Profile profile = profileRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("해당 프로필을 찾을 수 없습니다."));
@@ -107,6 +113,7 @@ public class ProfileService {
                 .rightVision(p.getRightVision())
                 .imageUrl(p.getImageUrl())
                 .settings(p.getSettings())
+                .fcmToken(p.getFcmToken())
                 .build();
     }
 }
