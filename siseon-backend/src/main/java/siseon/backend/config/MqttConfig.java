@@ -34,9 +34,9 @@ public class MqttConfig {
     // ────────────────────────────────────────────────────────
     // 토픽 상수
     // ────────────────────────────────────────────────────────
-    private static final String TOPIC_CONTROL_MODE    = "/control_mode";
-    private static final String TOPIC_REQUEST_PAIR    = "/request_pair";
-    private static final String TOPIC_PRESET_COORDINATE = "/preset_coordinate";
+    private static final String TOPIC_CONTROL_MODE    = "control_mode";
+    private static final String TOPIC_REQUEST_PAIR    = "request_pair";
+    private static final String TOPIC_PRESET_COORDINATE = "preset_coordinate";
 
     // ────────────────────────────────────────────────────────
     // 1) MQTT 커넥션 팩토리
